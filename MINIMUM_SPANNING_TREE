@@ -88,10 +88,10 @@ int findset(int x)
 
 void kruskal()
 {
-    int i, parent_u, parent_v;
+    int parent_u, parent_v;
     sort(graph.begin(), graph.end()); // increasing weight
     total = 0;
-    for(i=0; i<m; i++)
+    for(int i=0; i<m; i++)
     {
         parent_u = findset(graph[i].second.first);
         parent_v = findset(graph[i].second.second);
@@ -128,7 +128,7 @@ void take_input_of_graph()
     int u,v,w;
     for(int i=0; i<m; i++)
     {
-        scanf("%d %d %d", &u, &v, &w);
+        siii(u,v,w);
         cout<<u<<" "<<v<<" "<<w<<endl;
         graph.push_back(pair< int, pii >(w, pii (u, v)));
     }
