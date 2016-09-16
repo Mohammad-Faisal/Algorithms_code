@@ -239,6 +239,22 @@ int main()
             size_of_scc[cnt] = sal_cnt;  //dag er koto number vertex er related scc te koyta vertex chilo
         }
     }
+    
+    for(int i=1;i<=n;i++)
+    {
+        int loop = front_graph[i].size();
+
+        for(int j=0;j<loop;j++)
+        {
+
+         int next = front_graph[i][j];
+         int a = map_vertex[i];
+                int b = map_vertex[next];
+                //cout<<a<<" "<<b<<endl;
+                dag[a].push_back(b);
+                deg[b]++;
+            }
+        }
 
 
 
