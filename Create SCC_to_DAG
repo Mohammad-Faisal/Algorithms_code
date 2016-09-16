@@ -96,7 +96,6 @@ void reset(int n)
         reverse_graph[i].clear();
         bal[i]=0;
         sal[i]=0;
-        deg[i]=0;
     }
 }
 
@@ -192,7 +191,7 @@ int main()
         }
         //ei code e sob vertex 1 theke hisab kora hoise
         //ekhn amra dag paisi
-        //ekhn eita diye ja khushi kora jabe
+        //ekhn dag er upore ja khushi kora jabe
 
     }
 
