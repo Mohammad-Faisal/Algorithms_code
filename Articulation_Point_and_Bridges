@@ -77,6 +77,9 @@ typedef map<int , int> mii;
 //root er jonno ja ase tai ans hobe
 //root chara onnogular jonno count_children[node]+1 and hobe
 
+//root articulation point hobe jodi tar root children >1 hoy tai
+//root children variable e save rakhtesi er koyta children ase
+
 
 /*bridge, bi-directional, O(V+E)
 counter = time counter
@@ -93,10 +96,16 @@ int num[N];
 int counter = 1;
 int par[N];
 
+int root = 0;
+int root_children =0;
+
+int is_articulation_point[N];
+
 void reset(int n)
 {
     for(int i=0; i<=n; i++)
     {
+        is_articulation_point[i]=0;
         low[i] = 0;
         num[i]=0;
         counter =1 ;
@@ -118,12 +127,25 @@ void dfs(int node)
 
         if(!num[next])
         {
+            if(node==root)root_children++;
             par[next] = node;
             dfs(next);
 
-            if(low[next]>=num[node])
+            if(low[next]>=num[node])  //check for articulation point
             {
-                //node ekta articulation point
+                if(node==root) //special check for root
+                {
+                    if(root_children>1)
+                    {
+                        is_articulation_point[node]=1;
+                        //tahole root ekta articulation point
+                    }
+                }
+                else
+                {
+                     is_articulation_point[node]=1;
+                    //eta obossoi articulation point
+                }
             }
             if(low[next]>num[node])
             {
@@ -167,7 +189,14 @@ int main()
             graph[q].push_back(p);
         }
 
-        dfs(0);
+        for(int i=0;i<n;i++)
+        {
+            root_children = 0;
+            root = i;
+            dfs(i);
+        }
+
+
     }
 
 
