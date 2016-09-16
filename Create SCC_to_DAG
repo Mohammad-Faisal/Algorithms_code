@@ -252,7 +252,7 @@ int main()
                 int b = map_vertex[next];
                 //cout<<a<<" "<<b<<endl;
                 dag[a].push_back(b);
-                deg[b]++;
+                
             }
         }
 
