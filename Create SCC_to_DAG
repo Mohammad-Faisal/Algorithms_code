@@ -120,7 +120,7 @@ int dfs(int node, int type)
     for(int i=0; i<loop; i++)
     {
         int next;
-        if(type) next = front_graph[node][i];
+        if(type==1) next = front_graph[node][i];
         else next = reverse_graph[node][i];
         if(!vis[next])
         {
