@@ -121,11 +121,11 @@ void dfs(int node)
             par[next] = node;
             dfs(next);
 
-            if(low[next]>=low[node])
+            if(low[next]>=num[node])
             {
                 //node ekta articulation point
             }
-            if(low[next]>low[node])
+            if(low[next]>num[node])
             {
                 // node-next ekta bridge
             }
