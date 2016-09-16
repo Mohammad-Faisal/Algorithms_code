@@ -77,6 +77,13 @@ typedef map<int , int> mii;
 //root er jonno ja ase tai ans hobe
 //root chara onnogular jonno count_children[node]+1 and hobe
 
+
+/*bridge, bi-directional, O(V+E)
+counter = time counter
+num[i] = discovery time of vertex i
+low[i] = vertex with minimum discovery time that can be reached from subtree with i*/
+
+
 #define N 10010
 
 vi graph[N];
