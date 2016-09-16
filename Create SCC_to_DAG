@@ -71,16 +71,13 @@ typedef pair < ll , ll > pll;
 typedef map<int , int> mii;
 
 
-#define N 100100
+#define N 10100
 
 vi front_graph[N];
 vi reverse_graph[N];
 vi dag[N];
 
 int vis[N]= {};
-
-int size_of_scc[N];
-
 
 int bal[N];
 int bal_indx=0;
@@ -89,34 +86,26 @@ int sal[N];
 int sal_indx=0;
 int sal_cnt=0;
 
-int par[N]= {};
-
-
-int fnd( int p)
+void reset(int n)
 {
-    if(par[p]==p)return p;
-    par[p]=fnd(par[p]);
-    return par[p];
+    for(int i=0; i<=n; i++)
+    {
+        dag[i].clear();
+        vis[i]=0;
+        front_graph[i].clear();
+        reverse_graph[i].clear();
+        bal[i]=0;
+        sal[i]=0;
+        deg[i]=0;
+    }
 }
 
-
-int uni( int a , int b)
-{
-    int u,v;
-    u=fnd(a);
-    v=fnd(b);
-    if(u==v)return 0;
-    else par[v]=u;
-    return 0;
-}
-
-int dfs(int node, int type)
+void dfs(int node, int type)
 {
     vis[node] = 1;
     int loop;
     if(type==1)loop = front_graph[node].size();
     else loop = reverse_graph[node].size();
-
     for(int i=0; i<loop; i++)
     {
         int next;
@@ -139,124 +128,73 @@ int dfs(int node, int type)
     }
 }
 
-void reset()
-{
-    for(int i=0; i<=N; i++)
-    {
-        size_of_scc[i] = 0;
-        dag[i].clear();
-        vis[i]=0;
-        front_graph[i].clear();
-        reverse_graph[i].clear();
-        bal[i]=0;
-        sal[i]=0;
-        par[i] = i;
-    }
-
-    bal_indx=0;
-    sal_indx=0;
-
-    bal_cnt=0;
-    sal_cnt=0;
-}
-
 int main()
 {
 
 #ifndef ONLINE_JUDGE
     file;
 #endif // ONLINE_JUDGE
-
-
-    reset();
-
-    int n,m;
-    sii(n,m);
-
-    for(int i=0; i<m; i++)
+    int t;
+    si(t);
+    int cs = 1;
+    while(t--)
     {
-        int p,q;
-        sii(p,q);
-        front_graph[p].pb(q);
-        reverse_graph[q].pb(p);
-    }
-
-
-    bal_cnt=0;
-    bal_indx=0;
-
-    for(int i=0; i<n; i++)
-    {
-        if(!vis[i])
+        int n,m;
+        sii(n,m);
+        reset(n);
+        for(int i=0; i<m; i++)
         {
-            dfs(i,1);
+            int p,q;
+            sii(p,q);
+            front_graph[p].pb(q);
+            reverse_graph[q].pb(p);
         }
-    }
 
 
-    reverse(bal,bal+n);
+        bal_cnt=0;
+        bal_indx=0;
 
-    int cnt = 0;
-
-    map < int , int > map_vertex;
-    map < int , int > map_dag_vertex;
-
-
-    memset(vis,0,sizeof(vis));
-
-
-    for(int i=0; i<n; i++)
-    {
-        if(!vis[bal[i]])
+        for(int i=1; i<=n; i++)
         {
-            sal_indx=0;
-            sal_cnt=0;
-
-            dfs(bal[i],2);
-
-            cnt++;
-
-            cout<<"found an SCC having vertexes  :  "<<sal[0];
-
-            int prothom  = sal[0];
-            map_vertex[prothom] = cnt;
-
-            map_dag_vertex[cnt] = prothom;   //dag er kon index diye asol graph er kon index bujhay
-
-            for(int j=1; j<sal_cnt; j++)
+            if(!vis[i])
             {
-                cout<<"   "<<sal[j];
-                uni(prothom,sal[j]);
-
-                map_vertex[sal[j]] = cnt;  //asol graph r kon inedx dag er kon vertex bujhay
-
-                map_dag_vertex[cnt] = min( map_dag_vertex[cnt] , sal[j]);
+                dfs(i,1);
             }
-
-            cout<<endl;
-            cout<<"it represents  vertex number "<<cnt<<"  in DAG"<<endl;
-
-            size_of_scc[cnt] = sal_cnt;  //dag er koto number vertex er related scc te koyta vertex chilo
         }
-    }
-    
-    for(int i=1;i<=n;i++)
-    {
-        int loop = front_graph[i].size();
-
-        for(int j=0;j<loop;j++)
+        map < int , int > map_vertex;
+        memset(vis,0,sizeof(vis));
+        int cnt = 0;
+        for(int i=n-1; i>-1; i--)
         {
-
-         int next = front_graph[i][j];
-         int a = map_vertex[i];
-                int b = map_vertex[next];
-                //cout<<a<<" "<<b<<endl;
-                dag[a].push_back(b);
-                
+            if(!vis[bal[i]])
+            {
+                sal_indx=0;
+                sal_cnt=0;
+                cnt++;
+                dfs(bal[i],2);
+                for(int j=0; j<sal_cnt; j++)
+                {
+                    map_vertex[sal[j]] = cnt;  //asol graph r kon inedx dag er kon vertex bujhay
+                }
             }
         }
+        for(int i=1;i<=n;i++)
+        {
+            int loop = front_graph[i].size();
+            for(int j=0;j<loop;j++)
+            {
+                int next = front_graph[i][j];
+                int a = map_vertex[i];
+                int b = map_vertex[next];
+               // if(cs==79)cout<<a<<" "<<b<<endl;  //dag er edge gula
+                dag[a].push_back(b);
+            }
+        }
+        //ei code e sob vertex 1 theke hisab kora hoise
+        //ekhn amra dag paisi
+        //ekhn eita diye ja khushi kora jabe
 
-
+    }
 
 
     return 0;
