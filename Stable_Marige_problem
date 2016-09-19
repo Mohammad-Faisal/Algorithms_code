@@ -135,7 +135,6 @@ void stable(int n)
                     }
 
                 }
-                break;
             }
 
         }
