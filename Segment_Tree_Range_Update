@@ -1,0 +1,160 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define F first
+#define S second
+#define pb push_back
+
+#define _ ios_base::sync_with_stdio(0);
+#define fastt ios_base::sync_with_stdio(false); cin.tie(0);
+#define prec  cout<<fixed<<setprecision(16);
+//# define sess cout<<endl;
+
+#define file freopen("000.txt","r",stdin);
+#define balsal cout<<"dhukse"<<endl;
+
+#define pi acos(-1.0)
+#define PI 3.141592653589793
+#define INF 1e9
+
+#define si(n)                        scanf("%d",&n)
+#define sii(a,b)                    scanf("%d%d",&a,&b)
+#define siii(a,b,c)                scanf("%d%d%d",&a,&b,&c)
+#define sl(a)                        scanf("%lld",&a)
+#define sll(a,b)                    scanf("%lld%lld",&a,&b)
+#define slll(a,b,c)                scanf("%lld%lld%lld",&a,&b,&c)
+#define sf(n)                       scanf("%lf",&n)
+#define ss(n)                       scanf("%s",n)
+
+#define it_multiset  std::multiset<int>::iterator it;
+#define it_mii std::map<int, int>::iterator it;
+
+#define MOD 1000000007
+#define mod  1000000007
+//#define con continue;
+//#define ret return
+#define mx_value 1e19
+
+
+int sett( int N,int pos)
+{
+    return N=N | (1<<pos);
+}
+int reset(int N,int pos)
+{
+    return N= N & ~(1<<pos);
+}
+bool check(int N,int pos)
+{
+    return (bool)(N & (1<<pos));
+}
+
+void update(long long &x, long long val)
+{
+    x = x+val;
+    if(x>mod)x-=mod;
+}
+
+void fast()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(NULL), cout.tie(NULL);
+}
+
+
+
+typedef long long int ll;
+typedef  float flt;
+typedef double dbl;
+typedef vector<int >  vi;
+typedef pair < int , int > pii;
+typedef pair < ll , ll > pll;
+typedef map<int , int> mii;
+
+int tree[600000];
+int lazy[600000];
+int a[200000];
+
+void init(int node , int b , int e)
+{
+    lazy[node] = 0;
+    if(b==e)
+    {
+        tree[node] = a[b];
+    }
+    int mid = (b+e)/2;
+    init(node*2,b,mid);
+    init(node*2+1,mid+1,e);
+    tree[node] = tree[node*2] + tree[node*2+1];
+}
+
+void shift(int node, int b , int e)
+{
+    if(lazy[node])
+    {
+        tree[node] = tree[node] + (e-b+1)*lazy[node];
+        lazy[2*node] = lazy[node];
+        lazy[2*node+1] = lazy[node];
+        lazy[node] = 0;
+    }
+}
+
+void update(int node, int b , int e, int l , int r , int add)
+{
+    shift(node,b,e);
+    if(e<l || b>r)return;
+    if(b>=l && e<=r)
+    {
+        lazy[node] = lazy[node]+add;
+        shift(node,b,e);
+        return;
+    }
+    int mid = (b+e)/2;
+
+    update(node*2,b,mid,l,r,add);
+    update(node*2+1,mid+1,e,l,r,add);
+    tree[node] = tree[node*2] + tree[node*2+1];
+    return;
+}
+
+int get_sum(int node , int b, int e , int l , int r)
+{
+    shift(node,b,e);
+    if(e<l || b>r)return 0;
+    if(b>=l && e<=r)
+    {
+        shift(node,b,e);
+        return tree[node];
+    }
+    int mid = (b+e)/2;
+    int summ = get_sum(node*2,b,mid,l,r)+get_sum(node*2+1,mid+1,e,l,r);
+    return summ;
+}
+
+
+int main()
+{
+
+#ifndef ONLINE_JUDGE
+    //file;
+#endif // ONLINE_JUDGE
+
+//take input of the primary array a
+//assume array maximum size is 200000
+
+init(1,1,200000);
+
+update(1,1,8,1,3,1);
+cout<<get_sum(1,1,8,1,4)<<endl;
+update(1,1,8,2,3,1);
+cout<<get_sum(1,1,8,1,4)<<endl;
+update(1,1,8,3,5,2);
+cout<<get_sum(1,1,8,1,4)<<endl;
+update(1,1,8,4,4,6);
+cout<<get_sum(1,1,8,1,4)<<endl;
+update(1,1,8,5,7,1);
+cout<<get_sum(1,1,8,1,4)<<endl;
+
+
+
+    return 0;
+}
