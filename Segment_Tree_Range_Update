@@ -92,8 +92,8 @@ void shift(int node, int b , int e)
     if(lazy[node])
     {
         tree[node] = tree[node] + (e-b+1)*lazy[node];
-        lazy[2*node] = lazy[node];
-        lazy[2*node+1] = lazy[node];
+        lazy[2*node] = lazy[node*2]+lazy[node];
+        lazy[2*node+1] = lazy[node*2+1]+lazy[node];
         lazy[node] = 0;
     }
 }
